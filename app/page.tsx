@@ -378,6 +378,177 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* QR SHIELD + LIVE THREAT FEED */}
+      <section className="px-6 pb-20">
+        <div className="mx-auto max-w-6xl grid lg:grid-cols-2 gap-8">
+
+          {/* QR Shield */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="text-5xl mb-4">📷</div>
+              <h2 className="text-3xl font-bold mb-2">QR Shield Verification</h2>
+              <p className="text-slate-300">
+                Verify QR codes before scanning payment, login or registration links.
+              </p>
+            </div>
+
+            {/* Upload Box */}
+            <div className="border-2 border-dashed border-blue-400/30 rounded-2xl p-8 text-center bg-slate-900/40">
+              <div className="text-4xl mb-3">📱</div>
+              <p className="text-slate-300 mb-4">
+                Drag & drop QR image or choose a file
+              </p>
+
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                id="qr-upload"
+              />
+
+              <label
+                htmlFor="qr-upload"
+                className="inline-flex cursor-pointer rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500 transition"
+              >
+                Choose QR Image
+              </label>
+            </div>
+
+            {/* Demo Verification Result */}
+            <div className="mt-6 rounded-2xl border border-yellow-400/20 bg-yellow-500/10 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></div>
+                  <span className="font-bold text-yellow-300">Verification Result</span>
+                </div>
+                <span className="rounded-full bg-yellow-500 px-3 py-1 text-xs font-bold text-black">
+                  WARNING
+                </span>
+              </div>
+
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Detected Domain</span>
+                  <span className="font-semibold">paytm-secure-verify.xyz</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Trust Score</span>
+                  <span className="font-bold text-yellow-400">38/100</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Community Reports</span>
+                  <span className="font-semibold text-red-300">17 reports</span>
+                </div>
+              </div>
+
+              <div className="mt-4 rounded-xl bg-slate-900/60 p-4">
+                <p className="text-sm text-slate-200 leading-6">
+                  <span className="font-semibold text-yellow-300">AI Warning:</span> The QR redirects to a
+                  high-risk payment domain that has been reported multiple times by community users. Avoid
+                  entering UPI PIN, OTP or payment credentials.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Community Threat Feed */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <div className="w-4 h-4 rounded-full bg-red-500 animate-pulse"></div>
+                <h2 className="text-3xl font-bold">Live Threat Feed</h2>
+              </div>
+              <span className="text-sm text-green-400 font-semibold">LIVE</span>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  title: 'Fake SBI KYC QR',
+                  level: 'HIGH',
+                  time: '2 min ago',
+                  reports: '12 users',
+                  color: 'red',
+                },
+                {
+                  title: 'Suspicious UPI Payment QR',
+                  level: 'MEDIUM',
+                  time: '7 min ago',
+                  reports: '8 users',
+                  color: 'yellow',
+                },
+                {
+                  title: 'Fake Internship Registration Portal',
+                  level: 'HIGH',
+                  time: '15 min ago',
+                  reports: '21 users',
+                  color: 'red',
+                },
+                {
+                  title: 'Official College Notice QR',
+                  level: 'VERIFIED',
+                  time: '28 min ago',
+                  reports: 'Admin verified',
+                  color: 'green',
+                },
+              ].map((alert, index) => (
+                <div
+                  key={index}
+                  className={`rounded-2xl border p-4 transition-all duration-300 hover:scale-[1.02] ${
+                    alert.color === 'red'
+                      ? 'border-red-400/20 bg-red-500/10'
+                      : alert.color === 'yellow'
+                      ? 'border-yellow-400/20 bg-yellow-500/10'
+                      : 'border-green-400/20 bg-green-500/10'
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="font-bold text-white">{alert.title}</h3>
+                      <p className="text-sm text-slate-300 mt-1">
+                        Reported by {alert.reports}
+                      </p>
+                    </div>
+
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-bold ${
+                        alert.color === 'red'
+                          ? 'bg-red-500 text-white'
+                          : alert.color === 'yellow'
+                          ? 'bg-yellow-500 text-black'
+                          : 'bg-green-500 text-black'
+                      }`}
+                    >
+                      {alert.level}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-400">
+                    <span>🕒 {alert.time}</span>
+                    <span>Community Intelligence</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Real-time Explanation */}
+            <div className="mt-6 rounded-2xl bg-blue-500/10 border border-blue-400/20 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">⚡</span>
+                <span className="font-semibold text-blue-200">Why This Is Real-Time</span>
+              </div>
+
+              <p className="text-sm text-slate-200 leading-6">
+                Each report updates the trust score and threat feed dynamically. When multiple users report the
+                same QR, URL or SMS, CyberShield automatically increases the risk level and pushes a warning to
+                the live community feed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Footer */}
       <footer className="border-t border-white/10 px-6 py-8 text-center text-slate-400 text-sm">
         <p>🛡️ CyberShield: Verification Portal — AI-Powered Digital Trust Platform</p>
