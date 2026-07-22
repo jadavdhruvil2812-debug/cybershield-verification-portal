@@ -290,7 +290,94 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* AI SMS SCAM DETECTOR */}
+      <section className="px-6 pb-20">
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="text-5xl mb-4">📱</div>
+              <h2 className="text-3xl font-bold mb-2">
+                AI-Powered SMS Scam Detector
+              </h2>
+              <p className="text-slate-300">
+                Paste any SMS message to detect phishing, bank impersonation and scam patterns.
+              </p>
+            </div>
 
+            <textarea
+              rows={5}
+              placeholder="Paste suspicious SMS here... Example: Dear Customer, your SBI account will be blocked. Update KYC immediately: http://sbi-verify-now.xyz"
+              className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-5 py-4 text-white placeholder-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 resize-none"
+            />
+
+            <div className="mt-6 flex justify-center">
+              <button className="rounded-2xl bg-red-600 px-8 py-4 font-bold hover:bg-red-500 transition-all duration-300">
+                Analyze SMS
+              </button>
+            </div>
+
+            {/* Demo Result */}
+            <div className="mt-8 rounded-3xl border border-red-400/20 bg-red-500/10 p-6">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full bg-red-400 animate-pulse"></div>
+                  <h3 className="text-2xl font-bold text-red-300">
+                    High-Risk SMS Detected
+                  </h3>
+                </div>
+
+                <div className="px-4 py-2 rounded-full bg-red-500 text-white text-sm font-bold">
+                  LIKELY PHISHING
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-300 font-medium">Risk Score</span>
+                  <span className="text-2xl font-black text-red-400">94%</span>
+                </div>
+
+                <div className="h-4 rounded-full bg-slate-700 overflow-hidden">
+                  <div className="h-full w-[94%] rounded-full bg-gradient-to-r from-red-500 to-red-400"></div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl bg-slate-900/60 p-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl">🤖</span>
+                  <span className="font-semibold text-blue-200">AI Explanation</span>
+                </div>
+
+                <p className="text-slate-200 leading-7">
+                  The message uses urgency language ("blocked immediately"), impersonates a trusted bank
+                  brand (SBI), requests KYC verification and contains a suspicious external link. These
+                  indicators strongly match known banking phishing campaigns.
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-semibold mb-3 text-slate-200">Detected Threat Indicators</h4>
+                <div className="grid md:grid-cols-2 gap-3">
+                  {[
+                    'Urgency language detected',
+                    'Bank brand impersonation',
+                    'KYC scam pattern matched',
+                    'Suspicious verification link',
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-3 rounded-xl bg-slate-800/60 p-3 text-slate-300"
+                    >
+                      <span className="text-red-400">⚠️</span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Footer */}
       <footer className="border-t border-white/10 px-6 py-8 text-center text-slate-400 text-sm">
         <p>🛡️ CyberShield: Verification Portal — AI-Powered Digital Trust Platform</p>
