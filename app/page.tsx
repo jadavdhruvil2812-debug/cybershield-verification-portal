@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import jsQR from 'jsqr';
 
 export default function Home() {
   const [url, setUrl] = useState('');
@@ -9,6 +10,8 @@ export default function Home() {
 
   const [sms, setSms] = useState('');
   const [smsResult, setSmsResult] = useState<any>(null);
+    const [qrResult, setQrResult] = useState<any>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const analyzeUrl = () => {
     if (!url) return;
@@ -132,6 +135,96 @@ export default function Home() {
       color,
       threats,
     });
+  };
+  const analyzeQrImage = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const image = new Image();
+    const imageUrl = URL.createObjectURL(file);
+
+    image.src = imageUrl;
+
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) return;
+
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      ctx.drawImage(image, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+      if (code) {
+        const data = code.data.toLowerCase();
+
+        let score = 100;
+        const warnings: string[] = [];
+
+        if (
+          data.includes('upi://') ||
+          data.includes('pay?') ||
+          data.includes('payment')
+        ) {
+          score -= 30;
+          warnings.push('Payment request detected');
+        }
+
+        if (
+          data.includes('.xyz') ||
+          data.includes('.top') ||
+          data.includes('.click')
+        ) {
+          score -= 40;
+          warnings.push('High-risk domain detected');
+        }
+
+        if (
+          data.includes('verify') ||
+          data.includes('kyc') ||
+          data.includes('otp')
+        ) {
+          score -= 30;
+          warnings.push('Bank verification pattern detected');
+        }
+
+        let status = 'SAFE';
+        let color = 'green';
+
+        if (score < 40) {
+          status = 'WARNING';
+          color = 'red';
+        } else if (score < 70) {
+          status = 'SUSPICIOUS';
+          color = 'yellow';
+        }
+
+        setQrResult({
+          decoded: code.data,
+          score: Math.max(score, 0),
+          status,
+          color,
+          warnings,
+        });
+      } else {
+        setQrResult({
+          decoded: 'No QR code detected',
+          score: 0,
+          status: 'INVALID',
+          color: 'red',
+          warnings: ['The uploaded image does not contain a readable QR code'],
+        });
+      }
+
+      URL.revokeObjectURL(imageUrl);
+    };
   };
 
   const threatFeed = [
@@ -438,21 +531,73 @@ export default function Home() {
               Drag & drop QR image or choose a file
             </p>
 
-            <button className='rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500 transition'>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={analyzeQrImage}
+              className="hidden"
+            />
+
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500 transition"
+            >
               Choose QR Image
             </button>
           </div>
 
-          <div className='mt-8 rounded-2xl border border-red-400/20 bg-red-500/10 p-6'>
-            <div className='flex items-center justify-between mb-4'>
-              <h3 className='text-xl font-bold text-red-300'>
-                Verification Result
-              </h3>
-              <span className='rounded-full bg-red-500 px-3 py-1 text-sm font-bold text-white'>
-                WARNING
-              </span>
-            </div>
+          {qrResult && (
+            <div
+              className={`mt-8 rounded-2xl border p-6 ${
+                qrResult.color === 'green'
+                  ? 'border-green-400/20 bg-green-500/10'
+                  : qrResult.color === 'yellow'
+                  ? 'border-yellow-400/20 bg-yellow-500/10'
+                  : 'border-red-400/20 bg-red-500/10'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold">QR Analysis Result</h3>
 
+                <span
+                  className={`rounded-full px-3 py-1 text-sm font-bold ${
+                    qrResult.color === 'green'
+                      ? 'bg-green-500 text-black'
+                      : qrResult.color === 'yellow'
+                      ? 'bg-yellow-500 text-black'
+                      : 'bg-red-500 text-white'
+                  }`}
+                >
+                  {qrResult.status}
+                </span>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <p className="text-slate-400 text-sm">Decoded QR Content</p>
+                  <p className="font-semibold break-all">{qrResult.decoded}</p>
+                </div>
+
+                <div>
+                  <p className="text-slate-400 text-sm">Trust Score</p>
+                  <p className="font-semibold text-2xl">{qrResult.score}/100</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {qrResult.warnings.map((warning: string, index: number) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 rounded-xl bg-slate-900/40 p-3 text-slate-200"
+                  >
+                    <span className="text-red-400">⚠️</span>
+                    <span>{warning}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
             <div className='grid md:grid-cols-3 gap-4 mb-4'>
               <div>
                 <p className='text-slate-400 text-sm'>Detected Domain</p>
