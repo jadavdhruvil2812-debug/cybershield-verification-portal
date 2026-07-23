@@ -119,7 +119,7 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* Hero */}
+      {/* Hero Section */}
       <section className="px-6 py-16 md:py-24 text-center">
         <div className="mx-auto max-w-4xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-200 mb-6">
@@ -135,8 +135,25 @@ export default function Home() {
           <p className="mt-6 text-lg text-slate-300 leading-8 max-w-2xl mx-auto">
             AI-powered verification for URLs, QR codes, SMS messages and digital threats.
           </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="#verify"
+              className="rounded-2xl bg-blue-600 px-8 py-4 font-bold hover:bg-blue-500 transition-all duration-300 shadow-lg shadow-blue-500/25"
+            >
+              Start Verification
+            </a>
+
+            <a
+              href="#alerts"
+              className="rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-semibold text-slate-200 hover:bg-white/10 transition-all duration-300"
+            >
+              View Live Threats
+            </a>
+          </div>
         </div>
-      </section>
+      </section>      
+      {/* Navbar */}
 
       {/* REAL URL VERIFICATION ENGINE */}
       <section id="verify" className="px-6 pb-20">
@@ -545,6 +562,124 @@ export default function Home() {
                 same QR, URL or SMS, CyberShield automatically increases the risk level and pushes a warning to
                 the live community feed.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* CAMPUS VERIFICATION HUB + EVIDENCE VAULT */}
+      <section id="campus" className="px-6 pb-20">
+        <div className="mx-auto max-w-6xl grid lg:grid-cols-2 gap-8">
+
+          {/* Campus Hub */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="text-5xl mb-4">🏫</div>
+              <h2 className="text-3xl font-bold mb-2">Campus Verification Hub</h2>
+              <p className="text-slate-300">
+                Verify internships, placements, scholarships and official college notices.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                { title: 'Summer Internship Offer', status: 'FAKE DETECTED', color: 'red' },
+                { title: 'Campus Placement Drive', status: 'VERIFIED', color: 'green' },
+                { title: 'Government Scholarship Link', status: 'CHECK REQUIRED', color: 'yellow' },
+                { title: 'Official College Notice QR', status: 'ADMIN VERIFIED', color: 'green' },
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between rounded-2xl bg-slate-900/50 p-4 border border-white/5">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-3 h-3 rounded-full ${
+                      item.color === 'red'
+                        ? 'bg-red-400'
+                        : item.color === 'yellow'
+                        ? 'bg-yellow-400'
+                        : 'bg-green-400'
+                    }`} />
+                    <span className="font-semibold text-white">{item.title}</span>
+                  </div>
+
+                  <span className={`rounded-full px-3 py-1 text-xs font-bold ${
+                    item.color === 'red'
+                      ? 'bg-red-500 text-white'
+                      : item.color === 'yellow'
+                      ? 'bg-yellow-500 text-black'
+                      : 'bg-green-500 text-black'
+                  }`} >
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 rounded-2xl bg-blue-500/10 border border-blue-400/20 p-4">
+              <p className="text-sm text-slate-200 leading-6">
+                <span className="font-semibold text-blue-300">College Use Case:</span> Students can check whether a placement company, internship offer or scholarship link is officially verified by the institution before submitting personal documents or payments.
+              </p>
+            </div>
+          </div>
+
+          {/* Evidence Vault */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="text-5xl mb-4">📂</div>
+              <h2 className="text-3xl font-bold mb-2">Evidence Vault</h2>
+              <p className="text-slate-300">
+                Securely store screenshots, QR images, receipts and scam evidence with case tracking.
+              </p>
+            </div>
+
+            <div className="border-2 border-dashed border-blue-400/30 rounded-2xl p-8 text-center bg-slate-900/40">
+              <div className="text-4xl mb-3">📎</div>
+              <p className="text-slate-300 mb-4">
+                Upload screenshots, PDFs, transaction receipts or suspicious messages
+              </p>
+
+              <button className="rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500 transition">
+                Upload Evidence
+              </button>
+            </div>
+
+            {/* Generated Case */}
+            <div className="mt-6 rounded-2xl border border-green-400/20 bg-green-500/10 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-green-400 animate-pulse"></div>
+                  <span className="font-bold text-green-300">Case Generated</span>
+                </div>
+
+                <span className="text-xs text-slate-300">2026-07-23 10:42</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-slate-400">Case ID</p>
+                  <p className="font-bold text-white">CS-2026-1042</p>
+                </div>
+
+                <div>
+                  <p className="text-slate-400">Category</p>
+                  <p className="font-semibold text-white">Fake Internship Scam</p>
+                </div>
+
+                <div>
+                  <p className="text-slate-400">Evidence Count</p>
+                  <p className="font-semibold text-white">4 files</p>
+                </div>
+
+                <div>
+                  <p className="text-slate-400">Status</p>
+                  <span className="inline-flex rounded-full bg-yellow-500 px-3 py-1 text-xs font-bold text-black">
+                    UNDER REVIEW
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-4 rounded-xl bg-slate-900/60 p-4">
+                <p className="text-sm text-slate-200 leading-6">
+                  <span className="font-semibold text-green-300">Integrity Protection:</span> Evidence is timestamped and linked to a unique case ID so screenshots and documents can be tracked during investigation and reporting.
+                </p>
+              </div>
             </div>
           </div>
         </div>
